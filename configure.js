@@ -31,7 +31,7 @@ let githubUsername, githubRepo, botUsername;
     const file = fs.readFileSync(".git/config").toString();
     const url = file.match(/url = (.*)/)[1];
     console.log(url);
-    const params = url.match(/github.com\/([^/]*)\/(.*)\.git/);
+    const params = url.match(/github.com[/:]([^/]*)\/(.*)\.git/);
     githubUsername = params[1];
     githubRepo = params[2];
   } catch (e) {}
