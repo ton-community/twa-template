@@ -52,12 +52,16 @@ function _TonConnecterInternal() {
   const isConnected = connect.state.type === "online";
 
   return (
-    <div style={{ textAlign: "left", marginBottom: 20 }}>
+    <>
       {!isConnected && <TonConnect />}
-      {isConnected && <TonWalletDetails />}
-      {isConnected && <TransferTon />}
-      {isConnected && <Counter />}
-    </div>
+      {isConnected && (
+        <div style={{ textAlign: "left", marginBottom: 20 }}>
+          <TonWalletDetails />
+          <TransferTon />
+          <Counter />
+        </div>
+      )}
+    </>
   );
 }
 
@@ -87,7 +91,7 @@ function TonConnect() {
               );
             }}
           >
-            Authorize{" "}
+            Open Tonhub Wallet{" "}
           </button>
         )}
         {!isMobile() && (
