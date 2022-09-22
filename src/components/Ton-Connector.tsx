@@ -33,7 +33,7 @@ export default function TonConnector() {
   return (
     <TonhubConnectProvider
       network="mainnet"
-      url={`https://ton.org/`}
+      url="https://ton.org/"
       name="TON TWA BOT"
       debug={false}
       connectionState={connectionState}
@@ -42,7 +42,6 @@ export default function TonConnector() {
       }}
     >
       <_TonConnecterInternal />
-      {/* {connect.state.type === "online" && <TransferTon />} */}
     </TonhubConnectProvider>
   );
 }
@@ -67,13 +66,6 @@ function _TonConnecterInternal() {
 
 function TonConnect() {
   const connect = useTonhubConnect();
-
-  // @ts-ignore
-  console.log(connect.state?.walletConfig?.address);
-  const [_, setConnectionState] = useLocalStorage<RemoteConnectPersistance>(
-    "connection",
-    { type: "initing" }
-  );
 
   if (connect.state.type === "initing") {
     return <span>Waiting for session</span>;
