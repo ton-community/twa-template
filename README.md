@@ -37,5 +37,5 @@ This project is part of a set of 3 typical repositories needed for a blockchain 
 2. On push to the `main` branch, the app will be automatically deployed via github actions.
 
 # Roadmap
-[] Jetton transfer support
-[] Light/dark theme handling
+- [ ] Jetton transfer support
+- [ ] Light/dark theme handling
