@@ -5,7 +5,7 @@ import {
 } from "react-ton-x";
 import useLocalStorage from "use-local-storage";
 import isMobile from "is-mobile";
-
+import BN from "bn.js";
 import QRCode from "react-qr-code";
 
 import {
@@ -16,6 +16,13 @@ import {
 import { Address, fromNano, TonClient } from "ton";
 import { MainButton } from "@twa-dev/sdk/react";
 import { TransferTon } from "./TransferTon";
+import { Card } from "./Card";
+import { Counter } from "./Counter";
+
+// TODO change to L3 client
+export const tc = new TonClient({
+  endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
+});
 
 export default function TonConnector() {
   const [connectionState, setConnectionState] =
@@ -51,6 +58,7 @@ function _TonConnecterInternal() {
       {!isConnected && <TonConnect />}
       {isConnected && <TonWalletDetails />}
       {isConnected && <TransferTon />}
+      {isConnected && <Counter />}
     </div>
   );
 }
@@ -105,9 +113,6 @@ function TonWalletDetails() {
   const { isLoading, error, data, isFetching, fetchStatus, status } = useQuery(
     ["balance"],
     async () => {
-      const tc = new TonClient({
-        endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
-      });
       const b = await tc.getBalance(
         // @ts-ignore
         Address.parse(connect.state?.walletConfig?.address)
@@ -121,7 +126,7 @@ function TonWalletDetails() {
 
   return (
     <>
-      <div>
+      <Card title="Wallet">
         <div style={{ marginBottom: 20 }}>
           <div
             style={{
@@ -146,7 +151,7 @@ function TonWalletDetails() {
             Disconnect
           </button>
         )}
-      </div>
+      </Card>
     </>
   );
 }

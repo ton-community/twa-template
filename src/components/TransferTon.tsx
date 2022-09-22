@@ -1,6 +1,7 @@
 import { useTonhubConnect } from "react-ton-x";
 import { useState } from "react";
 import { toNano } from "ton";
+import { Card } from "./Card";
 
 export function TransferTon() {
   const connect = useTonhubConnect();
@@ -12,8 +13,7 @@ export function TransferTon() {
   );
 
   return (
-    <div style={{ marginTop: 18 }}>
-      <label style={{ marginRight: 8 }}>Transfer TON</label>
+    <Card title="Transfer TON">
       <div>
         <label>Amount </label>
         <input
@@ -32,7 +32,7 @@ export function TransferTon() {
         ></input>
       </div>
       <button
-      style={{marginTop: 18}}
+        style={{ marginTop: 18 }}
         onClick={async () => {
           setTxnStatus("Txn requested. Check your wallet");
           const stat = await connect.api.requestTransaction({
@@ -46,6 +46,6 @@ export function TransferTon() {
         Transfer
       </button>
       {txnStatus && <div>{txnStatus}</div>}
-    </div>
+    </Card>
   );
 }
