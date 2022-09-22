@@ -18,17 +18,30 @@ import { MainButton } from "@twa-dev/sdk/react";
 import { TransferTon } from "./TransferTon";
 import { Card } from "./Card";
 import { Counter } from "./Counter";
+import { useEffect, useState } from "react";
 
 // TODO change to L3 client
 export const tc = new TonClient({
   endpoint: "https://scalable-api.tonwhales.com/jsonRPC",
 });
 
+let wasPendingConnectionChecked = false;
+
 export default function TonConnector() {
   const [connectionState, setConnectionState] =
     useLocalStorage<RemoteConnectPersistance>("connection", {
       type: "initing",
     });
+
+  // fix for stale connections, can probably be improved
+  useEffect(() => {
+    if (!wasPendingConnectionChecked && connectionState?.type === "pending") {
+      localStorage.removeItem("connection");
+      // setConnectionState(undefined)
+      window.location.reload();
+    }
+    wasPendingConnectionChecked = true;
+  }, [connectionState]);
 
   return (
     <TonhubConnectProvider
