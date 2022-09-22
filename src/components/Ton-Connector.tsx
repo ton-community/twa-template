@@ -26,8 +26,10 @@ export default function TonConnector() {
   return (
     <TonhubConnectProvider
       network="mainnet"
-      url={`https://aaa.com`}
-      name="YOUR APP NAME"
+      url={`https://${
+        process.env.NODE_ENV !== "production" ? "ton.org" : window.location.host
+      }`}
+      name="TON TWA BOT"
       debug={false}
       connectionState={connectionState}
       setConnectionState={(s) => {
