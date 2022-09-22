@@ -8,6 +8,10 @@ This project is part of a set of 3 typical repositories needed for a blockchain 
 * Web frontend for interacting with the dapp from a web browser (coming soon)
 * Telegram bot for interacting with the dapp from inside Telegram messenger (this repo)
 
+# Prerequesities
+* Node.js v16 (other versions may work, needs more testing)
+* Tonhub wallet installed on a mobile phone
+
 # What does this repo contain?
 * A react-based TWA-ready app, interacting with TON
 * Github actions set to deploy app to github pages
@@ -31,3 +35,7 @@ This project is part of a set of 3 typical repositories needed for a blockchain 
 # Development
 1. Run `npm run dev` and edit the code as needed
 2. On push to the `main` branch, the app will be automatically deployed via github actions.
+
+# Roadmap
+[] Jetton transfer support
+[] Light/dark theme handling
