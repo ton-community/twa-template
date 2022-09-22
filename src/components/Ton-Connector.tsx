@@ -33,7 +33,7 @@ export default function TonConnector() {
   return (
     <TonhubConnectProvider
       network="mainnet"
-      url={`https://ton.org`}
+      url={`https://ton.org/`}
       name="TON TWA BOT"
       debug={false}
       connectionState={connectionState}
