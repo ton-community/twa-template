@@ -19,6 +19,7 @@ import { TransferTon } from "./TransferTon";
 import { Card } from "./Card";
 import { Counter } from "./Counter";
 import { useEffect, useState } from "react";
+import { Jetton } from "./Jettons";
 
 // TODO change to L3 client
 export const tc = new TonClient({
@@ -71,6 +72,7 @@ function _TonConnecterInternal() {
           <TonWalletDetails />
           <TransferTon />
           <Counter />
+          <Jetton />
         </div>
       )}
     </>
