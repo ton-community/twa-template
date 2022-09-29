@@ -28,7 +28,7 @@ export function Counter() {
 
   return (
     <Card title="Counter">
-      <h3>Counter number {isFetching ? "Loading..." : data}</h3>
+      <h3>{isFetching ? "Loading..." : data}</h3>
       <button
         onClick={async () => {
           await sendTxn(

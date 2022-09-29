@@ -6,10 +6,9 @@ import { Card } from "./Card";
 export function TransferTon() {
   const connect = useTonhubConnect();
   const [txnStatus, setTxnStatus] = useState<string | null>(null);
-  const [tonAmount, setTonAmount] = useState("0.1");
+  const [tonAmount, setTonAmount] = useState("0.01");
   const [tonRecipient, setTonRecipient] = useState(
-    // @ts-ignore
-    connect.state?.walletConfig?.address
+    "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c"
   );
 
   return (

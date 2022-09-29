@@ -7,13 +7,12 @@ import useLocalStorage from "use-local-storage";
 import isMobile from "is-mobile";
 import QRCode from "react-qr-code";
 
-import { useQuery } from "@tanstack/react-query";
-import { Address, fromNano, TonClient } from "ton";
+import { TonClient } from "ton";
 import { TransferTon } from "./TransferTon";
-import { Card } from "./Card";
 import { Counter } from "./Counter";
 import { useEffect } from "react";
 import { Jetton } from "./Jettons";
+import { TonWalletDetails } from "./TonWalletDetails";
 
 // TODO change to L3 client
 export const tc = new TonClient({
@@ -105,55 +104,5 @@ function TonConnect() {
       </div>
     );
   }
-  return <TonWalletDetails />;
-}
-
-function TonWalletDetails() {
-  const connect = useTonhubConnect();
-
-  // @ts-ignore
-  const { isLoading, error, data, isFetching, fetchStatus, status } = useQuery(
-    ["balance"],
-    async () => {
-      const b = await tc.getBalance(
-        // @ts-ignore
-        Address.parse(connect.state?.walletConfig?.address)
-      );
-
-      return `${fromNano(b)} TON`;
-    },
-    // @ts-ignore
-    { enabled: !!connect.state?.walletConfig?.address }
-  );
-
-  return (
-    <>
-      <Card title="Wallet">
-        <div style={{ marginBottom: 20 }}>
-          <div
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {/* @ts-ignore */}
-            Address: {connect.state.walletConfig.address}
-          </div>
-          <div>Balance: {isLoading ? "Loading..." : data}</div>
-        </div>
-        {/* @ts-ignore */}
-        {connect.state.walletConfig.address && (
-          <button
-            onClick={() => {
-              localStorage.removeItem("connection");
-              window.location.reload();
-            }}
-          >
-            Disconnect
-          </button>
-        )}
-      </Card>
-    </>
-  );
+  return <></>;
 }
