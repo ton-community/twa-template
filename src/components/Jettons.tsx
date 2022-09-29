@@ -1,68 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTonhubConnect } from "react-ton-x";
 import { beginCell, toNano, Address, Cell, fromNano } from "ton";
 import { Card } from "./Card";
 import { tc } from "./Ton-Connector";
 import BN from "bn.js";
-import { useState } from "react";
+import { useMakeGetCall } from "../hooks/useMakeGetCall";
+import { useSendTxn } from "../hooks/useSendTxn";
 const minterAddr = "EQB8StgTQXidy32a8xfu7j4HMoWYV0b0cFM8nXsP2cza_b7Y";
 
 export function Jetton() {
   const connect = useTonhubConnect();
+  const { isIssuedTxn, sendTxn, markTxnEnded } = useSendTxn();
 
   // @ts-ignore
   const userAddress = Address.parse(connect.state!.walletConfig!.address);
-  const [isIssuedTxn, setIssuedTxn] = useState(false);
 
   const {
     data: jettonWalletAddress,
     isFetching: isFetchingJettonWalletAddress,
-  } = useQuery(
-    ["get_wallet_address", userAddress.toFriendly()],
-    async (): Promise<string | undefined> => {
-      const { stack } = await tc.callGetMethod(
-        Address.parse(minterAddr),
-        "get_wallet_address",
-        [
-          [
-            "tvm.Slice",
-            beginCell()
-              .storeAddress(userAddress)
-              .endCell()
-              .toBoc({ idx: false })
-              .toString("base64"),
-          ],
-        ]
-      );
-
-      return Cell.fromBoc(Buffer.from(stack[0][1].bytes, "base64"))[0]
-        .beginParse()
-        .readAddress()
-        ?.toFriendly();
-    }
+  } = useMakeGetCall(
+    Address.parse(minterAddr),
+    "get_wallet_address",
+    [beginCell().storeAddress(userAddress).endCell()],
+    (res) => (res[0] as Cell).beginParse().readAddress()?.toFriendly()
   );
 
-  const { data: jettonBalance, isFetching: isFetchingJettonBalance } = useQuery(
-    ["jetton_balance", userAddress.toFriendly()],
-    async (): Promise<string | undefined> => {
-      const { stack } = await tc.callGetMethod(
-        Address.parse(jettonWalletAddress!),
-        "get_wallet_data"
-      );
-
-      const balance = fromNano(BigInt(stack[0][1]).toString());
-
-      if (balance !== jettonBalance) {
-        setIssuedTxn(false);
+  const { data: jettonBalance, isFetching: isFetchingJettonBalance } =
+    useMakeGetCall(
+      jettonWalletAddress ? Address.parse(jettonWalletAddress) : undefined,
+      "get_wallet_data",
+      [],
+      (res): string => {
+        const newBalance = fromNano(res[0] as BN);
+        if (isIssuedTxn && newBalance !== jettonBalance) {
+          markTxnEnded();
+        }
+        return newBalance;
+      },
+      {
+        enabled: !!jettonWalletAddress,
+        refetchInterval: isIssuedTxn ? 2000 : undefined,
       }
-
-      return balance;
-    },
-    {
-      enabled: !!jettonWalletAddress,
-      refetchInterval: isIssuedTxn ? 2000 : undefined,
-    }
-  );
+    );
 
   return (
     <Card title="Jetton">
@@ -90,15 +68,11 @@ export function Jetton() {
             )
             .endCell();
 
-          const txnStat = await connect.api.requestTransaction({
-            to: minterAddr,
-            value: toNano(0.05).toString(),
-            payload: mintTokensBody.toBoc().toString("base64"),
-          });
-
-          if (txnStat.type === "success") {
-            setIssuedTxn(true);
-          }
+          await sendTxn(
+            Address.parse(minterAddr),
+            toNano(0.05),
+            mintTokensBody
+          );
         }}
       >
         Get jettons from faucet
