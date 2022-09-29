@@ -5,20 +5,14 @@ import {
 } from "react-ton-x";
 import useLocalStorage from "use-local-storage";
 import isMobile from "is-mobile";
-import BN from "bn.js";
 import QRCode from "react-qr-code";
 
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Address, fromNano, TonClient } from "ton";
-import { MainButton } from "@twa-dev/sdk/react";
 import { TransferTon } from "./TransferTon";
 import { Card } from "./Card";
 import { Counter } from "./Counter";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Jetton } from "./Jettons";
 
 // TODO change to L3 client
@@ -38,7 +32,6 @@ export default function TonConnector() {
   useEffect(() => {
     if (!wasPendingConnectionChecked && connectionState?.type === "pending") {
       localStorage.removeItem("connection");
-      // setConnectionState(undefined)
       window.location.reload();
     }
     wasPendingConnectionChecked = true;

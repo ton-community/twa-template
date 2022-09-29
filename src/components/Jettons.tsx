@@ -1,7 +1,6 @@
 import { useTonhubConnect } from "react-ton-x";
 import { beginCell, toNano, Address, Cell, fromNano } from "ton";
 import { Card } from "./Card";
-import { tc } from "./Ton-Connector";
 import BN from "bn.js";
 import { useMakeGetCall } from "../hooks/useMakeGetCall";
 import { useSendTxn } from "../hooks/useSendTxn";
