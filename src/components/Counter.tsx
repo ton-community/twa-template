@@ -1,17 +1,15 @@
-import { useTonhubConnect } from "react-ton-x";
-import { useQuery } from "@tanstack/react-query";
+
 import { Address, toNano, beginCell } from "ton";
 import { Card } from "./Card";
-import { tc } from "./Ton-Connector";
-import { useState } from "react";
 import { useMakeGetCall } from "../hooks/useMakeGetCall";
 import { useSendTxn } from "../hooks/useSendTxn";
 import BN from "bn.js";
+import { TransactionWatcher } from './TransactionWatcher';
 
 export function Counter() {
   const counterAddr = "EQC-QTihJV_B4f8M2nynateMLynaRT_uwNYnnuyy87kam-G7";
 
-  const { isIssuedTxn, sendTxn, markTxnEnded } = useSendTxn();
+  const { isIssuedTxn, txnState, sendTxn, markTxnEnded } = useSendTxn();
   const { data, isFetching } = useMakeGetCall(
     Address.parse(counterAddr),
     "counter",
@@ -40,6 +38,7 @@ export function Counter() {
       >
         Increment
       </button>
+      <TransactionWatcher txnState={txnState} />
     </Card>
   );
 }
