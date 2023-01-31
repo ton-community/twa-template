@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "ton": "13.3.0",
     "ton-core": "^0.46.0",
+    "ton-crypto": "^3.2.0",
     "use-local-storage": "^2.3.6",
     "vite-plugin-node-polyfills": "^0.7.0"
   },

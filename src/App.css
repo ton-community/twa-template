@@ -1,41 +1,72 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+:root {
+  --tg-theme-bg-color: #efeff3;
+  --tg-theme-button-color: #63d0f9;
+  --tg-theme-button-text-color: black;
+}
+
+.App {
+  height: 100vh;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+}
+
+.Container {
   padding: 2rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.Button {
+  background-color: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.Disabled {
+  filter: brightness(50%);
+  cursor: initial;
+}
+
+.Button.Active:hover {
+  filter: brightness(105%);
+}
+
+.Hint {
+  color: var(--tg-theme-hint-color);
+}
+
+.Card {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: #131415;
+    --tg-theme-text-color: #fff;
+    --tg-theme-button-color: #32a6fb;
+    --tg-theme-button-text-color: #fff;
   }
-  to {
-    transform: rotate(360deg);
+
+  .Card {
+    background-color: var(--tg-theme-bg-color);
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .CounterValue {
+    border-radius: 16px;
+    color: white;
+    padding: 10px;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

@@ -8,11 +8,11 @@ import { TransferTon } from "./components/TransferTon";
 function App() {
   return (
     <div className="App">
-      <h1>Ton Sample TWA</h1>
-      <TonConnectButton />
-      <div style={{ textAlign: "left", marginBottom: 20 }}>
+      <div className="Container">
+        <TonConnectButton />
         {/* <TonWalletDetails /> */}
-        <TransferTon />
+        {/* <TransferTon /> */}
+        <Counter />
         {/* <Counter />
         <Jetton /> */}
       </div>
