@@ -8,8 +8,6 @@ import {
   beginCell,
 } from "ton-core";
 
-// EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb
-
 export default class Counter implements Contract {
   static createForDeploy(code: Cell, initialCounterValue: number): Counter {
     const data = beginCell().storeUint(initialCounterValue, 64).endCell();
@@ -29,7 +27,7 @@ export default class Counter implements Contract {
     const { stack } = await provider.get("counter", []);
     return stack.readBigNumber();
   }
-  
+
   async sendIncrement(provider: ContractProvider, via: Sender) {
     const messageBody = beginCell()
       .storeUint(1, 32) // op (op #1 = increment)

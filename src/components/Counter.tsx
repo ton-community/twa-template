@@ -1,11 +1,19 @@
 import { Address, toNano, beginCell } from "ton";
-import { Card } from "./Card";
+// import { Card } from "./Card";
 import { useSendTxn } from "../hooks/useSendTxn";
 import { TransactionWatcher } from "./TransactionWatcher";
 
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useCounterContract } from "../hooks/useCounterContract";
 import { useTonConnect } from "../hooks/useTonConnect";
+
+import {
+  Card,
+  FlexBoxCol,
+  FlexBoxRow,
+  Ellipsis,
+  Button,
+} from "./styled/styled";
 
 export function Counter() {
   const { connected } = useTonConnect();
@@ -15,20 +23,27 @@ export function Counter() {
     <div className="Container">
       <TonConnectButton />
 
-      <div className="Card">
-        <b>Counter Address</b>
-        <div className="Hint">{address?.slice(0, 30) + "..."}</div>
-        <b>Counter Value</b>
-        <div>{value ?? "Loading..."}</div>
-        <a
-          className={`Button ${connected ? "Active" : "Disabled"}`}
-          onClick={() => {
-            sendIncrement();
-          }}
-        >
-          Increment
-        </a>
-      </div>
+      <Card>
+        <FlexBoxCol>
+          <h3>Counter</h3>
+          <FlexBoxRow>
+            <b>Address</b>
+            <Ellipsis>{address}</Ellipsis>
+          </FlexBoxRow>
+          <FlexBoxRow>
+            <b>Value</b>
+            <div>{value ?? "Loading..."}</div>
+          </FlexBoxRow>
+          <Button
+            className={`Button ${connected ? "Active" : "Disabled"}`}
+            onClick={() => {
+              sendIncrement();
+            }}
+          >
+            Increment
+          </Button>
+        </FlexBoxCol>
+      </Card>
     </div>
   );
 }

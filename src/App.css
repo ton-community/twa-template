@@ -1,9 +1,11 @@
-:root {
+ :root {
   --tg-theme-bg-color: #efeff3;
-  --tg-theme-button-color: #63d0f9;
-  --tg-theme-button-text-color: black;
+  --tg-theme-button-color: #2eaddc;
+  --tg-theme-button-text-color: white;
 }
 
+
+/*
 .App {
   height: 100vh;
   background-color: var(--tg-theme-bg-color);
@@ -11,7 +13,6 @@
 }
 
 .Container {
-  padding: 2rem;
   max-width: 500px;
   display: flex;
   flex-direction: column;
@@ -45,13 +46,6 @@
   color: var(--tg-theme-hint-color);
 }
 
-.Card {
-  width: 100%;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: white;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --tg-theme-bg-color: #131415;
@@ -69,4 +63,4 @@
     color: white;
     padding: 10px;
   }
-}
+} */

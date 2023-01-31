@@ -6,7 +6,7 @@ import { useTonConnect } from "./useTonConnect";
 import { Address, OpenedContract } from "ton-core";
 
 export function useCounterContract() {
-  const client = useTonClient();
+  const { client } = useTonClient();
   const [val, setVal] = useState<null | string>();
   const { sender } = useTonConnect();
 
@@ -21,16 +21,22 @@ export function useCounterContract() {
     return client.open(contract) as OpenedContract<Counter>;
   }, [client]);
 
+  const [isPolling, setPolling] = useState(false);
+
   useEffect(() => {
+    if (!counterContract) return;
     async function getValue() {
-      if (!counterContract) return;
+      console.log("polling");
       setVal(null);
-      const val = await counterContract.getCounter();
-      setVal(val.toString());
-      await sleep(5000); // sleep 5 seconds and poll value again
+      const val = await counterContract!.getCounter();
+      setVal(String(val));
+      await sleep(3000);
       getValue();
     }
-    getValue();
+    if (!isPolling) {
+      getValue();
+      setPolling(true);
+    }
   }, [counterContract]);
 
   return {
