@@ -1,8 +1,3 @@
-import { Address, toNano, beginCell } from "ton";
-// import { Card } from "./Card";
-import { useSendTxn } from "../hooks/useSendTxn";
-import { TransactionWatcher } from "./TransactionWatcher";
-
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useCounterContract } from "../hooks/useCounterContract";
 import { useTonConnect } from "../hooks/useTonConnect";
