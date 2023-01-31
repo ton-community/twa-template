@@ -1,18 +1,22 @@
 import "./App.css";
-import TonConnector from "./components/Ton-Connector";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { TonConnectButton } from "@tonconnect/ui-react";
+import { Counter } from "./components/Counter";
+import { Jetton } from "./components/Jettons";
+import { TonWalletDetails } from "./components/TonWalletDetails";
+import { TransferTon } from "./components/TransferTon";
 
 function App() {
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="App">
-        <h1>Ton Sample TWA</h1>
-        <TonConnector />
+    <div className="App">
+      <h1>Ton Sample TWA</h1>
+      <TonConnectButton />
+      <div style={{ textAlign: "left", marginBottom: 20 }}>
+        {/* <TonWalletDetails /> */}
+        <TransferTon />
+        {/* <Counter />
+        <Jetton /> */}
       </div>
-    </QueryClientProvider>
+    </div>
   );
 }
 
