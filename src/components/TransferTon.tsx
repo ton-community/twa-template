@@ -12,7 +12,7 @@ export const Input = styled("input")`
 `;
 
 export function TransferTon() {
-  const { sender } = useTonConnect();
+  const { sender, connected } = useTonConnect();
 
   const [tonAmount, setTonAmount] = useState("0.01");
   const [tonRecipient, setTonRecipient] = useState(
@@ -41,6 +41,7 @@ export function TransferTon() {
           ></Input>
         </FlexBoxRow>
         <Button
+          disabled={!connected}
           style={{ marginTop: 18 }}
           onClick={async () => {
             sender.send({

@@ -4,6 +4,7 @@ import { useFaucetJettonContract } from "../hooks/useFaucetJettonContract";
 import { Card, FlexBoxCol, FlexBoxRow, Button } from "./styled/styled";
 
 export function Jetton() {
+  const { connected } = useTonConnect();
   const { mint, jettonWalletAddress, balance } = useFaucetJettonContract();
 
   return (
@@ -19,6 +20,7 @@ export function Jetton() {
           <h4>{balance}</h4>
         </FlexBoxRow>
         <Button
+          disabled={!connected}
           onClick={async () => {
             mint();
           }}

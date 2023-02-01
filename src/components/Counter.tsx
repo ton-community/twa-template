@@ -30,6 +30,7 @@ export function Counter() {
             <div>{value ?? "Loading..."}</div>
           </FlexBoxRow>
           <Button
+            disabled={!connected}
             className={`Button ${connected ? "Active" : "Disabled"}`}
             onClick={() => {
               sendIncrement();

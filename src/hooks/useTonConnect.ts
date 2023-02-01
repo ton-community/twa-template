@@ -1,7 +1,18 @@
-import { useTonConnectUI } from "@tonconnect/ui-react";
 import { CHAIN } from "@tonconnect/protocol";
+import { atom, useRecoilState } from "recoil";
 import { Sender, SenderArguments } from "ton-core";
-import { useAsyncInitialize } from "./useAsyncInitialize";
+import { useTonConnectUI } from "@tonconnect/ui-react";
+import { useEffect } from "react";
+
+const connStateAtom = atom<{ chain: CHAIN | null; address: string | null }>({
+  key: "connState", // unique ID (with respect to other atoms/selectors)
+  default: {
+    chain: null,
+    address: null,
+  }, // default value (aka initial value)
+});
+
+let isSubscribed = false;
 
 export function useTonConnect(): {
   sender: Sender;
@@ -11,14 +22,18 @@ export function useTonConnect(): {
 } {
   const [tonConnectUI] = useTonConnectUI();
 
-  const conDetails = useAsyncInitialize(async () => {
-    await tonConnectUI.connectionRestored;
-    return {
-      connected: tonConnectUI.connected,
-      wallet: tonConnectUI.wallet?.account.address ?? null,
-      network: tonConnectUI.wallet?.account.chain ?? null,
-    };
-  });
+  const [connectionState, setConnState] = useRecoilState(connStateAtom);
+
+  useEffect(() => {
+    if (isSubscribed) return;
+    isSubscribed = true;
+    tonConnectUI.onStatusChange((w) => {
+      setConnState({
+        chain: w?.account.chain ?? null,
+        address: w?.account.address ?? null,
+      });
+    });
+  }, []);
 
   return {
     sender: {
@@ -35,8 +50,8 @@ export function useTonConnect(): {
         });
       },
     },
-    connected: !!conDetails?.connected,
-    wallet: conDetails?.wallet ?? null,
-    network: conDetails?.network ?? null,
+    connected: !!connectionState.address,
+    wallet: connectionState.address,
+    network: connectionState.chain,
   };
 }
