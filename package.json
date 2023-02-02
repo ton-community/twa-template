@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "configbot": "node configure.js"
   },
   "dependencies": {
     "@orbs-network/ton-access": "^2.2.2",
