@@ -23,8 +23,6 @@ export function useFaucetJettonContract() {
     return await faucetJettonContract!.getWalletAddress(Address.parse(wallet!));
   }, [faucetJettonContract]);
 
-  const balance = useAsyncInitialize(async () => {}, [jettonWalletAddress]);
-
   const { data, isFetching } = useQuery(
     ["jetton"],
     async () => {

@@ -43,11 +43,7 @@ function App() {
                 : "N/A"}
             </Button>
           </FlexBoxRow>
-          {/* <TonWalletDetails /> */}
-          {/* <TransferTon /> */}
           <Counter />
-          {/* <Counter />
-        <Jetton /> */}
           <TransferTon />
           <Jetton />
         </FlexBoxCol>
