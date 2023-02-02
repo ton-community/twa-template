@@ -1,44 +1,45 @@
+import { TonConnectButton } from "@tonconnect/ui-react";
+import { useCounterContract } from "../hooks/useCounterContract";
+import { useTonConnect } from "../hooks/useTonConnect";
 
-import { Address, toNano, beginCell } from "ton";
-import { Card } from "./Card";
-import { useMakeGetCall } from "../hooks/useMakeGetCall";
-import { useSendTxn } from "../hooks/useSendTxn";
-import BN from "bn.js";
-import { TransactionWatcher } from './TransactionWatcher';
+import {
+  Card,
+  FlexBoxCol,
+  FlexBoxRow,
+  Ellipsis,
+  Button,
+} from "./styled/styled";
 
 export function Counter() {
-  const counterAddr = "EQC-QTihJV_B4f8M2nynateMLynaRT_uwNYnnuyy87kam-G7";
-
-  const { isIssuedTxn, txnState, sendTxn, markTxnEnded } = useSendTxn();
-  const { data, isFetching } = useMakeGetCall(
-    Address.parse(counterAddr),
-    "counter",
-    [],
-    (s): string => {
-      const newData = (s[0] as BN).toString();
-      if (isIssuedTxn && newData !== data) {
-        markTxnEnded();
-      }
-      return newData;
-    },
-    { refetchInterval: isIssuedTxn ? 2000 : undefined }
-  );
+  const { connected } = useTonConnect();
+  const { value, address, sendIncrement } = useCounterContract();
 
   return (
-    <Card title="Counter">
-      <h3>{isFetching ? "Loading..." : data}</h3>
-      <button
-        onClick={async () => {
-          await sendTxn(
-            Address.parse(counterAddr),
-            toNano(0.01),
-            beginCell().storeUint(0x37491f2f, 32).storeUint(0, 64).endCell()
-          );
-        }}
-      >
-        Increment
-      </button>
-      <TransactionWatcher txnState={txnState} />
-    </Card>
+    <div className="Container">
+      <TonConnectButton />
+
+      <Card>
+        <FlexBoxCol>
+          <h3>Counter</h3>
+          <FlexBoxRow>
+            <b>Address</b>
+            <Ellipsis>{address}</Ellipsis>
+          </FlexBoxRow>
+          <FlexBoxRow>
+            <b>Value</b>
+            <div>{value ?? "Loading..."}</div>
+          </FlexBoxRow>
+          <Button
+            disabled={!connected}
+            className={`Button ${connected ? "Active" : "Disabled"}`}
+            onClick={() => {
+              sendIncrement();
+            }}
+          >
+            Increment
+          </Button>
+        </FlexBoxCol>
+      </Card>
+    </div>
   );
 }
