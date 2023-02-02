@@ -638,7 +638,7 @@ Values:
     background-color: #222;
     color: white;
   }
-  height: 100vh;
+  min-height: 100vh;
   padding: 20px 20px;
 `,AppContainer=styled.div`
   max-width: 900px;
