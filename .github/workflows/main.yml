@@ -25,3 +25,6 @@ jobs:
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: dist # The folder the action should deploy.
+
+permissions:
+  contents: write
