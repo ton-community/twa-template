@@ -1,21 +1,15 @@
-# TON Starter Template - Telegram Web App (TWA)
+# twa-template
 > Starter template for a new TWA interacting with the TON blockchain 
 
 # Overview
-This project is part of a set of 3 typical repositories needed for a blockchain dapp running on TON blockchain:
-
-* [Smart contracts in FunC that are deployed on-chain](https://github.com/ton-defi-org/tonstarter-contracts)
-* Web frontend for interacting with the dapp from a web browser (coming soon)
-* Telegram bot for interacting with the dapp from inside Telegram messenger (this repo)
-
 The project is highly-opinionated, and there are many other alternate routes it could have taken. Some examples:
-- Supports only tonhub and its corresponding session mediating library, ton-x. Feel free to contribute support for other wallets!
+- Supports Ton Connect 2 wallets
 - Uses vite with react (alternative to create-react-app)
 - Uses the `ton` npm package
 
 # Prerequesities
 * Node.js v16 (other versions may work, needs more testing)
-* Tonhub wallet installed on a mobile phone
+* A TON Connect compatible wallet (e.g. [Tonkeeper](https://tonkeeper.com/))
 
 # What does this repo contain?
 * A react-based TWA-ready app, interacting with TON
