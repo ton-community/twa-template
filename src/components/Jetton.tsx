@@ -23,7 +23,7 @@ export function Jetton() {
         </FlexBoxRow>
         <FlexBoxRow>
           Balance
-          <h4>{balance}</h4>
+          <div>{balance ?? "Loading..."}</div>
         </FlexBoxRow>
         <Button
           disabled={!connected}

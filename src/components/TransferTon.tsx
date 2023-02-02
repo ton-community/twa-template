@@ -2,14 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Address, toNano } from "ton";
 import { useTonConnect } from "../hooks/useTonConnect";
-import { Card, FlexBoxCol, FlexBoxRow, Button } from "./styled/styled";
-
-export const Input = styled("input")`
-  border: 1px solid #fefefe;
-  padding: 10px 20px;
-  border-radius: 10px;
-  width: 100%;
-`;
+import { Card, FlexBoxCol, FlexBoxRow, Button, Input } from "./styled/styled";
 
 export function TransferTon() {
   const { sender, connected } = useTonConnect();

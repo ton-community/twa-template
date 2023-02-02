@@ -4,6 +4,7 @@ import { useTonConnect } from "./useTonConnect";
 import FaucetJetton from "../contracts/faucetJetton";
 import { Address, OpenedContract } from "ton-core";
 import FaucetJettonWallet from "../contracts/faucetJettonWallet";
+import { useQuery } from "@tanstack/react-query";
 
 export function useFaucetJettonContract() {
   const { wallet, sender } = useTonConnect();
@@ -22,19 +23,25 @@ export function useFaucetJettonContract() {
     return await faucetJettonContract!.getWalletAddress(Address.parse(wallet!));
   }, [faucetJettonContract]);
 
-  const balance = useAsyncInitialize(async () => {
-    if (!jettonWalletAddress || !client) return;
-    const jwContract = new FaucetJettonWallet(
-      Address.parse(jettonWalletAddress)
-    );
-    return client!.open(jwContract).getBalance();
-  }, [jettonWalletAddress]);
+  const balance = useAsyncInitialize(async () => {}, [jettonWalletAddress]);
+
+  const { data, isFetching } = useQuery(
+    ["jetton"],
+    async () => {
+      if (!jettonWalletAddress || !client) return null;
+      const jwContract = new FaucetJettonWallet(
+        Address.parse(jettonWalletAddress)
+      );
+      return (await client!.open(jwContract).getBalance()).toString();
+    },
+    { refetchInterval: 3000 }
+  );
 
   return {
     mint: () => {
       faucetJettonContract?.sendMintFromFaucet(sender, Address.parse(wallet!));
     },
     jettonWalletAddress,
-    balance,
+    balance: isFetching ? null : data,
   };
 }

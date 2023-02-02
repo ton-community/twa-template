@@ -1,18 +1,6 @@
 import { CHAIN } from "@tonconnect/protocol";
-import { atom, useRecoilState } from "recoil";
 import { Sender, SenderArguments } from "ton-core";
-import { useTonConnectUI } from "@tonconnect/ui-react";
-import { useEffect } from "react";
-
-const connStateAtom = atom<{ chain: CHAIN | null; address: string | null }>({
-  key: "connState", // unique ID (with respect to other atoms/selectors)
-  default: {
-    chain: null,
-    address: null,
-  }, // default value (aka initial value)
-});
-
-let isSubscribed = false;
+import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
 
 export function useTonConnect(): {
   sender: Sender;
@@ -21,19 +9,7 @@ export function useTonConnect(): {
   network: CHAIN | null;
 } {
   const [tonConnectUI] = useTonConnectUI();
-
-  const [connectionState, setConnState] = useRecoilState(connStateAtom);
-
-  useEffect(() => {
-    if (isSubscribed) return;
-    isSubscribed = true;
-    tonConnectUI.onStatusChange((w) => {
-      setConnState({
-        chain: w?.account.chain ?? null,
-        address: w?.account.address ?? null,
-      });
-    });
-  }, []);
+  const wallet = useTonWallet();
 
   return {
     sender: {
@@ -50,8 +26,8 @@ export function useTonConnect(): {
         });
       },
     },
-    connected: !!connectionState.address,
-    wallet: connectionState.address,
-    network: connectionState.chain,
+    connected: !!wallet?.account.address,
+    wallet: wallet?.account.address ?? null,
+    network: wallet?.account.chain ?? null,
   };
 }
