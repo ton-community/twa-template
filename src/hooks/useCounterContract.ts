@@ -5,6 +5,7 @@ import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonConnect } from "./useTonConnect";
 import { Address, OpenedContract } from "ton-core";
 import { useQuery } from "@tanstack/react-query";
+import { CHAIN } from "@tonconnect/protocol";
 
 export function useCounterContract() {
   const { client } = useTonClient();
