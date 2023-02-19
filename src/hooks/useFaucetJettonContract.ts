@@ -18,19 +18,22 @@ export function useFaucetJettonContract() {
     return client.open(contract) as OpenedContract<FaucetJetton>;
   }, [client, wallet]);
 
-  const jettonWalletAddress = useAsyncInitialize(async () => {
-    if (!faucetJettonContract) return;
-    return await faucetJettonContract!.getWalletAddress(Address.parse(wallet!));
-  }, [faucetJettonContract]);
+  const jwContract = useAsyncInitialize(async () => {
+    if (!faucetJettonContract || !client) return;
+    const jettonWalletAddress = await faucetJettonContract!.getWalletAddress(
+      Address.parse(wallet!)
+    );
+    return client!.open(
+      new FaucetJettonWallet(Address.parse(jettonWalletAddress))
+    ) as OpenedContract<FaucetJettonWallet>;
+  }, [faucetJettonContract, client]);
 
   const { data, isFetching } = useQuery(
     ["jetton"],
     async () => {
-      if (!jettonWalletAddress || !client) return null;
-      const jwContract = new FaucetJettonWallet(
-        Address.parse(jettonWalletAddress)
-      );
-      return (await client!.open(jwContract).getBalance()).toString();
+      if (!jwContract) return null;
+
+      return (await jwContract.getBalance()).toString();
     },
     { refetchInterval: 3000 }
   );
@@ -39,7 +42,7 @@ export function useFaucetJettonContract() {
     mint: () => {
       faucetJettonContract?.sendMintFromFaucet(sender, Address.parse(wallet!));
     },
-    jettonWalletAddress,
+    jettonWalletAddress: jwContract?.address.toString(),
     balance: isFetching ? null : data,
   };
 }
